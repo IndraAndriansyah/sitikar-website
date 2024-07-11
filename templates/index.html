@@ -3,7 +3,8 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8" />
-    <title>SITIKAR</title>
+    <title>SITIKAR | Sistem Informasi Kebakaran</title>
+    <link rel="icon" href="./static/Images/logo_diskarpb.png" type="image/png">
     <link rel="stylesheet" href="./static/CSS/style.css" />
     <!-- Boxicons CDN Link -->
     <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
@@ -39,46 +40,96 @@
         <li>
           <a class="direct-btn" id="directbtn" href="#directbtn">
             <i class='bx bx-navigation' ></i>
-            <span class="links_name">Directions</span>
+            <span class="links_name">Rute</span>
           </a>
-          <span class="tooltip">Directions</span>
+          <span class="tooltip">Rute</span>
         </li>
         <li>
           <a class="traffic-btn" id="trafficbtn" href="#trafficbtn">
             <i class='bx bxs-traffic-barrier' ></i>
-            <span class="links_name">Traffic</span>
+            <span class="links_name">Kemacetan</span>
           </a>
-          <span class="tooltip">Traffic</span>
+          <span class="tooltip">Kemacetan</span>
         </li>
         <li>
-          <a href="#">
-            <i class="bx bx-cog"></i>
-            <span class="links_name">Setting</span>
+          <a href="#aboutbtn" id="about-button">
+            <i class='bx bx-info-circle'></i>
+            <span class="links_name">Tentang SITIKAR</span>
           </a>
-          <span class="tooltip">Setting</span>
+          <span class="tooltip">Tentang SITIKAR</span>
         </li>
       </ul>
-      
+      <div id="popupabout" class="popup-about">
+        <div class="popup-content">
+            <span class="close-popup-btn">&times;</span>
+            <h2>Tentang SITIKAR</h2>
+            <p style="text-align: justify;">SITIKAR atau Sistem Informasi Kebakaran adalah platform inovatif yang dirancang untuk membantu kendaraan darurat yang saat ini fokus pada pemadaman kebakaran di kota Bandung. 
+              Platform ini bertujuan untuk memudahkan petugas pemadam kebakaran dalam menentukan rute optimal selama operasi penyelamatan. 
+              Melalui memanfaatkan teknologi terkini, SITIKAR dapat mempertimbangkan berbagai faktor seperti kondisi lalu lintas, jarak tempuh, 
+              dan waktu tanggap untuk memastikan kendaraan darurat dapat tiba di lokasi secepat mungkin. 
+              Oleh karena itu, SITIKAR dapat meningkatkan efisiensi dan efektivitas operasi penyelamatan, 
+              serta memberikan respon yang lebih cepat dalam situasi darurat.</p>
+            <h3></h3>
+            <h2 style="margin-top: 20px;">Profil Team Capstone</h2>
+            <div class="team-profile">
+              <div class="profile">
+                <h3>Ahmad Irsyad Akmal</h3>
+                <p>S1 Teknik Komputer</p>
+                <img src="./static/Images/foto_irsyad.jpg" alt="Ahmad Irsyad Akmal">
+              </div>
+              <div class="profile">
+                <h3>Indra Andriansyah Dody Misnadin</h3>
+                <p>S1 Teknik Komputer</p>
+                <img src="./static/Images/foto_indra.jpg" alt="Indra Andriansyah Dody Misnadin">
+              </div>
+              <div class="profile">
+                <h3>Alfin Andreas Situmeang</h3>
+                <p>S1 Teknik Komputer</p>
+                <h4></h4>
+                <img src="./static/Images/foto_alfin.jpg" alt="Alfin Andreas Situmeang">
+              </div>
+          </div>
+          <div class="button-container">
+            <button id="drive-button"
+              onclick="window.open('https://drive.google.com/drive/folders/1IHpsDIxRBPUSmUfY_u5V-zpt8Wj565zX')"
+              class="btn shadow drive-text">
+              <i class='bx bxs-hdd'></i><h4>Drive Data</h4>
+            </button>
+            <button id="github-button"
+              onclick="window.open('https://github.com/IndraAndriansyah/sitikar-website')"
+              class="btn shadow github-text">
+              <i class='bx bxl-github'></i><h4>GitHub</h4> 
+            </button>
+          </div>          
+        </div>
+    </div>
     </div>
     
     <section class="home-section">
-      
       <div class="map" id="map">
+        
         <div class="direct-sidebar" >
           <div class="title-details">
-            <div class="title_name">Driving Directions</div>
-          </div>
-          <div id='destinationSearchBox' class='searchbox'></div>
+            <div class="title_name">Rute Perjalanan</div>
+          </div>          
+          <ul class="nav-list">
+            <li>
+              <div id='destinationSearchBox' class='searchbox'></div>
+            </li>
+            <div class='directOption-side-panel'></div>
+            <li>
+            </li>
+          </ul>
         </div>
         <div class="traffic-sidebar" >
           <div class="title-details">
-            <div class="title_name">Traffic Information</div>
+            <div class="title_name">Informasi Kemacetan</div>
           </div>
           <ul class="nav-list">
             <li>
               <a class="traffic-bar" id="trafficIncidents" href="#trafficincidents">
-                <i class='bx bxs-traffic-cone'  ></i>
-                <span class="links_name">Traffic Incidents</span>
+                <i class='bx bxs-traffic-cone'></i>
+                <span class="links_name">Insiden Kemacetan</span>
                 <label class="switch">
                   <input id="incidents-toggle" type="checkbox" />
                   <span class="toggle round"></span>
@@ -87,21 +138,27 @@
             </li>
             <li>
               <a class="traffic-bar" id="trafficFlow" href="#trafficflow">
-                <i class='bx bxs-traffic'  ></i>
-                <span class="links_name">Traffic Flow</span>
+                <i class='bx bxs-traffic'></i>
+                <span class="links_name">Alur Kemacetan</span>
                 <label class="switch">
                   <input id="flow-toggle" type="checkbox" />
                   <span class="toggle round"></span>
                 </label>
               </a>
             </li>
-            
+            <li>
+              <div class='incident-side-panel'>
+                <header class='incident-side-panel__header -traffic'></header>
+                <div class='tt-overflow'>
+                    <div class='js-results'></div>
+                </div>
+              </div>
+            </li>
           </ul>
         </div>
         <img src="./static/Images/SITIKAR DAMKAR ANIMASI-fotor-bg-remover-20240628223654.png" class="small-logo">
     </div>
-      
-    </section>
+  </section>
     <script src='https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.25.1/maps/maps-web.min.js'></script>
     <script src='https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.25.1/services/services-web.min.js'></script>
     <script src='https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.2.0/SearchBox-web.js'></script>
@@ -116,13 +173,12 @@
 
 
     <script src="./static/JS/script-button.js"></script>
-    
     <script src="./static/map.js"></script>
-    
-    <script src="./static/JS/poi.js"></script>
-    <script src="./static/JS/searchbox.js"></script>
-    <script src="./static/JS/route-system.js"></script>
     <script src="./static/JS/incident-detail.js"></script>
+    <script src="./static/JS/poi.js"></script>
+    <script src="./static/JS/route-system.js"></script>
+    <script src="./static/JS/searchbox.js"></script>
+    
     <script src="./static/JS/copyrights.js"></script>
     
     

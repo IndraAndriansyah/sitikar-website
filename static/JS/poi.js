@@ -1,5 +1,5 @@
 var bounds = new tt.LngLatBounds();
-var popup = null;
+var icon_popup = null;
 var hoveredFeature = null;
 
 map.on('load', function() {
@@ -51,7 +51,7 @@ function bindMapEvents() {
     map.getCanvas().style.cursor = 'pointer';
     var feature = map.queryRenderedFeatures(event.point)[0];
 
-    createPopup(feature);
+    createPopupPOI(feature);
     hoveredFeature = feature;
 
     map.setFeatureState(feature, { hover: true });
@@ -64,7 +64,7 @@ function bindMapEvents() {
     }
     hoveredFeature = null;
     if (!event.originalEvent.relatedTarget) {
-        removePopup();
+        removeIconPopup();
     }
   });
 
@@ -75,14 +75,14 @@ function bindMapEvents() {
     }
     hoveredFeature = null;
     if (!event.originalEvent.relatedTarget) {
-        removePopup();
+        removeIconPopup();
     }
   });
 }
- /*set popup POI*/
-function createPopup(result) {
+/*set popup POI*/
+function createPopupPOI(result) {
   var markerSize = 10;
-  removePopup();
+  removeIconPopup();
   
   var popupOffset = {
     'top': [0, markerSize],
@@ -98,21 +98,21 @@ function createPopup(result) {
 
   htmlContent.innerHTML ='<div class="popup-container">'+'<div class="category">'+Formatters.formatCategoryName(result.properties.category)+'<div>'+'<div class="name">'+result.properties.name+'</div>'+'</div>';
 
-  popup = new tt.Popup({ oofset: popupOffset })
+  icon_popup = new tt.Popup({ oofset: popupOffset })
     .setLngLat(result.geometry.coordinates)
     .setDOMContent(htmlContent)
     .addTo(map)
     .setMaxWidth('200px');
 
   htmlContent.addEventListener('mouseleave', function(){
-    removePopup();
+    removeIconPopup();
   });
 }
 /*menghapus popup POI*/
-function removePopup(){
-  if (popup) {
-    popup.remove();
-    popup = null;
+function removeIconPopup(){
+  if (icon_popup) {
+    icon_popup.remove();
+    icon_popup = null;
   }
 }
 /*hide POI agar tidak muncul*/

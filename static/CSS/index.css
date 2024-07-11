@@ -3050,7 +3050,7 @@ div[class^="guidance-marker-"] {
         font-family: "Gotham", Helvetica, Arial, sans-serif;
         font-size: 13px;
         font-weight: bold;
-        -webkit-line-clamp: 2;
+        /*-webkit-line-clamp: 2;*/
         margin-top: 8px;
         overflow: hidden;
         text-overflow: ellipsis;
