@@ -1,10 +1,11 @@
-const apiKey = 'eGjlzc0IQpU2t2qqyICGA0aQ764NWIFE';
+const apiKey = 'aG5BK10VOmyInEIhXhG3UpmV2aveplaO';
 let center = [107.6110212, -6.9215529];
+const stylemap ='https://api.tomtom.com/style/2/custom/style/dG9tdG9tQEBAWGU2WWFHQ2k0R2ExVndVRzs1NDdmMzU1OS01NzI2LTQxYTctYTYwZC0zNDUyYmI2MjFjZTY=.json?key='+apiKey
 
 var map = tt.map ({
   key: apiKey,
   container:"map",
-  style:"https://api.tomtom.com/style/2/custom/style/dG9tdG9tQEBAZU9zd2VGcGoxR3l5d0xPczs2YTg4NDZmNS0zNTgwLTQ3ZjktYTE0My05MDFmMTgwOWVkOWE=.json?key=8dzxZD2SRE74hHUfz5Kg4DdW6KdNL859",
+  style: stylemap,
   center: center,
   zoom:14,
   fadeDuration:50,

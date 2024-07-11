@@ -116,7 +116,7 @@ function createPopup(feature, lngLat) {
 
 function plotRoute(startLng, startLat, endLng, endLat, callback) {
   tt.services.calculateRoute({
-    key: '8dzxZD2SRE74hHUfz5Kg4DdW6KdNL859',
+    key: apiKey,
     traffic: true,
     locations: [[startLng, startLat], [endLng, endLat]],
     maxAlternatives: 2,
@@ -226,7 +226,7 @@ function createSearchBox() {
   var searchBox = new tt.plugins.SearchBox(tt.services, {
     showSearchButton: false,
     searchOptions: {
-      key: '8dzxZD2SRE74hHUfz5Kg4DdW6KdNL859'
+      key: apiKey
     },
     labels: {
       placeholder: 'Masukkan titik lokasi TKP'
