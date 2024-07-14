@@ -122,12 +122,12 @@ function plotRoute(startLng, startLat, endLng, endLat, callback) {
     maxAlternatives: 2,
     computeTravelTimeFor: 'all',
     computeBestOrder: false,
-    travelMode: 'car',
-    vehicleWidth: 3,
+    travelMode: 'bus',
+    //vehicleWidth: 3,
     vehicleLength: 7,
     vehicleHeight: 3,
     routeType: 'fastest',
-    vehicleMaxSpeed: 100
+    vehicleMaxSpeed: 150
   })
   .then(function(response) {
     var features = response.toGeoJson().features;
