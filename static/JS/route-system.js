@@ -1,4 +1,7 @@
 var routeColors = ['#4a90e2', '#fcba03', '#fc0303', '#03fc84', '#7703fc'];
+var lightGrayColor = '#D3D3D3'; // Lighter gray color
+var outlineColor = '#000000'; // Outline color for the shadow effect
+var selectedRouteIndex = 0;
 var infoHint = new InfoHint('info', 'bottom-center').addTo(document.getElementById('map'));
 
 var markers = [
@@ -15,6 +18,8 @@ var marker_hidran = [
   { lat: -6.898616354466943, lng: 107.6122359707722, label: 'Titik Hidran Taman Cikapayang Dago' }
 ];
 
+var hydrantMarkers = []; // Array to store hydrant marker objects
+
 function createMarker(icon, position, color, popupText) {
   var markerElement = document.createElement('div');
   markerElement.className = 'marker';
@@ -30,21 +35,42 @@ function createMarker(icon, position, color, popupText) {
   markerContentElement.appendChild(iconElement);
 
   var popup = new tt.Popup({ offset: 30 }).setText(popupText);
-  new tt.Marker({ element: markerElement, anchor: 'bottom' })
+  return new tt.Marker({ element: markerElement, anchor: 'bottom' })
     .setLngLat(position)
-    .setPopup(popup)
-    .addTo(map);
+    .setPopup(popup);
 }
 
 var fireTruckIcon = './static/Images/truck-logo.png';
 var hidranIcon = './static/Images/Hydrant.png';
 
-marker_hidran.forEach(function(marker) {
-  createMarker(hidranIcon, [marker.lng, marker.lat], '#0099FF', marker.label);
+// Create fire truck markers
+markers.forEach(function(marker) {
+  createMarker(fireTruckIcon, [marker.lng, marker.lat], '#ff0000', marker.label).addTo(map);
 });
 
-markers.forEach(function(marker) {
-  createMarker(fireTruckIcon, [marker.lng, marker.lat], '#ff0000', marker.label);
+function addHydrantMarkers() {
+  marker_hidran.forEach(function(marker) {
+    var hydrantMarker = createMarker(hidranIcon, [marker.lng, marker.lat], '#0099FF', marker.label);
+    hydrantMarker.addTo(map);
+    hydrantMarkers.push(hydrantMarker);
+  });
+}
+
+function removeHydrantMarkers() {
+  hydrantMarkers.forEach(function(marker) {
+    marker.remove();
+  });
+  hydrantMarkers = [];
+}
+
+// Toggle hydrant markers
+var hidranToggle = document.getElementById('hidran-toggle');
+hidranToggle.addEventListener('change', function(event) {
+  if (event.target.checked) {
+    addHydrantMarkers();
+  } else {
+    removeHydrantMarkers();
+  }
 });
 
 var startMarker, endMarker;
@@ -114,6 +140,7 @@ function createPopup(feature, lngLat) {
   popup_route.addTo(map);
 }
 
+
 function plotRoute(startLng, startLat, endLng, endLat, callback) {
   tt.services.calculateRoute({
     key: apiKey,
@@ -123,15 +150,41 @@ function plotRoute(startLng, startLat, endLng, endLat, callback) {
     computeTravelTimeFor: 'all',
     computeBestOrder: false,
     travelMode: 'bus',
-    //vehicleWidth: 3,
+    vehicleWidth: 3,
     vehicleLength: 7,
     vehicleHeight: 3,
     routeType: 'fastest',
-    vehicleMaxSpeed: 150
+    vehicleMaxSpeed: 100
   })
   .then(function(response) {
     var features = response.toGeoJson().features;
+
     features.forEach(function(feature, index) {
+      var color = index === 0 ? routeColors[index] : lightGrayColor; // Only main route has the original color
+      var width = 6;
+      var opacity = index === 0 ? 1 : 0.5; // Set main route opacity to 1
+
+      // Add the white outline layer
+      map.addLayer({
+        'id': 'route-outline' + index,
+        'type': 'line',
+        'source': {
+          'type': 'geojson',
+          'data': feature
+        },
+        'paint': {
+          'line-color': '#000000',
+          'line-width': width + 2,
+          'line-opacity': 1,
+          'line-blur': 2 // Reduced blur for shadow effect
+        },
+        'layout': {
+          'line-cap': 'round',
+          'line-join': 'round'
+        }
+      });
+
+      // Add the route layer
       map.addLayer({
         'id': 'route' + index,
         'type': 'line',
@@ -140,8 +193,14 @@ function plotRoute(startLng, startLat, endLng, endLat, callback) {
           'data': feature
         },
         'paint': {
-          'line-color': routeColors[index],
-          'line-width': 6
+          'line-color': color,
+          'line-width': width,
+          'line-opacity': opacity,
+          'line-blur': 0 // Reduced blur for shadow effect
+        },
+        'layout': {
+          'line-cap': 'round',
+          'line-join': 'round'
         }
       });
 
@@ -156,6 +215,10 @@ function plotRoute(startLng, startLat, endLng, endLat, callback) {
           popup_route.remove();
         }
       });
+
+      map.on('click', 'route' + index, function() {
+        highlightRoute(index, features);
+      });
     });
 
     var bounds = new tt.LngLatBounds();
@@ -164,20 +227,41 @@ function plotRoute(startLng, startLat, endLng, endLat, callback) {
     });
     map.fitBounds(bounds, { padding: 50 });
 
-    // Add route information to list_route
     var routeInformationList = createRouteInformationList(features);
     list_route.appendChild(routeInformationList);
 
-    // Call the callback function if provided
+    // Automatically highlight the main route
+    highlightRoute(0, features);
+
     if (callback) {
       callback();
     }
   });
 }
 
+function highlightRoute(index, features) {
+  features.forEach(function(feature, idx) {
+    var color = routeColors[idx];
+    var fadedColor = lightGrayColor;
+    var opacity = idx === index ? 1 : 0.5;
+
+    // Update route layer properties
+    map.setPaintProperty('route' + idx, 'line-color', idx === index ? color : fadedColor);
+    map.setPaintProperty('route' + idx, 'line-opacity', opacity);
+    map.setPaintProperty('route-outline' + idx, 'line-opacity', idx === index ? 1 : 0.5);
+
+    // Move the selected route layers to the top
+    if (idx === index) {
+      map.moveLayer('route-outline' + idx);
+      map.moveLayer('route' + idx);
+    }
+  });
+  selectedRouteIndex = index;
+}
+
 function createRouteInformationItem(summary, index) {
   return (
-    '<div class="route-wrapper">' +
+    '<div class="route-wrapper" id="route-info-' + index + '">' +
     '<div class="route-icon" style="background:' + routeColors[index] + '"></div>' +
     '<div class="route-information">' +
     '<div>' + (index ? 'Rute Alternatif ' + index : 'Rute Utama') + '</div>' +
@@ -199,10 +283,13 @@ function createRouteInformationList(features) {
     var resultListElementWrapper = document.createElement('div');
     resultListElementWrapper.innerHTML = createRouteInformationItem(summary, index);
     resultListElementWrapper.onmouseover = function() {
-      map.setPaintProperty('route' + index, 'line-width', 6);
+      map.setPaintProperty('route' + index, 'line-width', 8);
     };
     resultListElementWrapper.onmouseout = function() {
       map.setPaintProperty('route' + index, 'line-width', 6);
+    };
+    resultListElementWrapper.onclick = function() {
+      highlightRoute(index, features);
     };
     routesListWrapper.appendChild(resultListElementWrapper);
   });
@@ -252,7 +339,6 @@ function createSearchBox() {
         startMarker = new tt.Marker({ element: createMarkerElement('start') }).setLngLat([nearestMarker.lng, nearestMarker.lat]).addTo(map);
 
         plotRoute(nearestMarker.lng, nearestMarker.lat, endLocation.lng, endLocation.lat);
-        
       }
     }
   });
@@ -289,9 +375,6 @@ function showContextMenu(e) {
     if (!directsidebar.classList.contains('open')) {
       directsidebar.classList.add('open');
     }
-
-  
-
   };
 
   popupContent.appendChild(navigateOption);
@@ -311,7 +394,6 @@ function showContextMenu(e) {
 }
 
 map.on('contextmenu', showContextMenu);
-
 
 function clearRouteList() {
   list_route.innerHTML = '';
