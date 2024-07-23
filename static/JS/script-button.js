@@ -68,3 +68,29 @@ window.addEventListener('click', function(event) {
       document.getElementById('popupabout').style.display = 'none';
   }
 });
+
+
+
+//title animation
+document.addEventListener('DOMContentLoaded', function() {
+  let title = document.title;
+  let index = 0;
+  let scrollInterval;
+
+  function scrollTitle() {
+    document.title = title.substring(index) + ' ' + title.substring(0, index);
+    index = (index + 1) % title.length;
+  }
+
+  function startAnimation() {
+    scrollInterval = setInterval(scrollTitle, 200); // Ganti angka 200 sesuai kecepatan yang diinginkan
+    setTimeout(() => {
+      clearInterval(scrollInterval);
+      document.title = title; // Reset title to the original after the animation
+      index = 0; // Reset index to 0
+    }, 200 * title.length); // Stop after one full cycle
+  }
+
+  startAnimation(); // Start immediately
+  setInterval(startAnimation, 60000); // Start every 1 minute
+});

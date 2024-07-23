@@ -403,14 +403,26 @@
   opacity: 0;
   pointer-events: none;
   transition: 0.4s;
+  flex-grow: 1;
+  text-align: left;
+  margin-left: 10px; /* Sesuaikan nilai ini untuk posisi teks */
 }
 
 .direct-sidebar.open li a .links_name{
   opacity: 1;
   pointer-events: auto;
 }
-
-
+.direct-sidebar li a:hover .links_name,
+.direct-sidebar li a:hover i{
+  transition: all 0.5s ease;
+  color: #11101D;
+}
+.direct-sidebar li i{
+  height: 50px;
+  line-height: 50px;
+  font-size: 18px;
+  border-radius: 12px;
+}
 
 .tt-popup {
   padding-top: 7px;
@@ -569,7 +581,7 @@ input:checked+.toggle:before {
 .small-logo {
   position: absolute;
   bottom: 10px; /* Jarak dari bawah */
-  right: 10px; /* Jarak dari kanan */
+  left: 10px; /* Jarak dari kanan */
   width: 80px; /* Sesuaikan dengan lebar yang diinginkan */
   height: auto; /* Biarkan ketinggian menyesuaikan proporsi */
   z-index: 1000; /* Pastikan lebih tinggi dari z-index elemen lain jika perlu */
@@ -900,32 +912,6 @@ input:checked+.toggle:before {
 #drive-button:hover {
   background-color: #005f5f; /* Darker teal for hover effect */
 }
-
-/*
-.tt-search-box {
-  border-radius: 12px; /* Anda dapat mengubah nilai ini sesuai kebutuhan 
-  
-}
-
-.tt-search-box-input {
-  border-radius: 12px; 
-  overflow: hidden; 
-}
-
-.tomtom.searchbox.resultselected{
-  border-radius: 12px; 
-  overflow: hidden; 
-}
-
-#destinationSearchBox {
-  border-radius: 12px; 
-  overflow: hidden; 
-}
-
-.searchbox-container {
-  border-radius: 12px; 
-  overflow: hidden; 
-}*/
 
 
 .tt-traffic-icon {

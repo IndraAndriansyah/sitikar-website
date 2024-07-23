@@ -111,13 +111,33 @@
         <div class="direct-sidebar" >
           <div class="title-details">
             <div class="title_name">Rute Perjalanan</div>
-          </div>          
+          </div>
           <ul class="nav-list">
             <li>
               <div id='destinationSearchBox' class='searchbox'></div>
             </li>
-            <div class='directOption-side-panel'></div>
             <li>
+              <a class="hidran-bar" id="hidran" href="#hidran">
+                <i class='bx bx-navigation'></i>
+                <span class="links_name">Titik Hidran</span>
+                <label class="switch">
+                  <input id="hidran-toggle" type="checkbox" />
+                  <span class="toggle round"></span>
+                </label>
+              </a>
+            </li>
+            <li>
+              <a class="upt-bar" id="upt" href="#upt">
+                <i class='bx bx-buildings'></i>
+                <span class="links_name">Wilayah UPT</span>
+                <label class="switch">
+                  <input id="upt-toggle" type="checkbox" />
+                  <span class="toggle round"></span>
+                </label>
+              </a>
+            </li>
+            <li>
+              <div class='directOption-side-panel'></div>
             </li>
           </ul>
         </div>
@@ -142,16 +162,6 @@
                 <span class="links_name">Alur Kemacetan</span>
                 <label class="switch">
                   <input id="flow-toggle" type="checkbox" />
-                  <span class="toggle round"></span>
-                </label>
-              </a>
-            </li>
-            <li>
-              <a class="hidran-bar" id="hidran" href="#hidran">
-                <i class='bx bx-navigation'></i>
-                <span class="links_name">Titik Hidran</span>
-                <label class="switch">
-                  <input id="hidran-toggle" type="checkbox" />
                   <span class="toggle round"></span>
                 </label>
               </a>
@@ -184,11 +194,11 @@
 
     <script src="./static/JS/script-button.js"></script>
     <script src="./static/map.js"></script>
+    <script src="./static/JS/wmk-area.js"></script>
     <script src="./static/JS/incident-detail.js"></script>
     <script src="./static/JS/poi.js"></script>
     <script src="./static/JS/route-system.js"></script>
     <script src="./static/JS/searchbox.js"></script>
-    
     <script src="./static/JS/copyrights.js"></script>
     
     
