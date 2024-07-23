@@ -581,7 +581,7 @@ input:checked+.toggle:before {
 .small-logo {
   position: absolute;
   bottom: 10px; /* Jarak dari bawah */
-  left: 10px; /* Jarak dari kanan */
+  right: 10px; /* Jarak dari kanan */
   width: 80px; /* Sesuaikan dengan lebar yang diinginkan */
   height: auto; /* Biarkan ketinggian menyesuaikan proporsi */
   z-index: 1000; /* Pastikan lebih tinggi dari z-index elemen lain jika perlu */
