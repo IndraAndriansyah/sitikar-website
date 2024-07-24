@@ -16,13 +16,8 @@ var map = tt.map ({
   },
 });
 
-
-
 map.addControl(new tt.FullscreenControl());
 map.addControl(new tt.NavigationControl(), 'top-right');
-
-
-
 
 document.querySelector('#flow-toggle').addEventListener('change', function(event) {
   if (event.target.checked) {

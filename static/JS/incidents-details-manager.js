@@ -12,7 +12,7 @@ function IncidentDetailsMarkersManager(map, incidentMarkerFactory) {
 IncidentDetailsMarkersManager.prototype.addMarkers = function(incidents) {
   var newMarkers = this._mapResponseToFeaturesDictionary(incidents);
 
-  //Diff steps:
+  // Diff steps:
   // 1. Iterate over all existing markers
   // 2. If newMarkers doesn't contain the element, then remove EXISTING marker
   // 3. If newMarkers contain the element, then update EXISTING marker and remove
@@ -140,6 +140,19 @@ IncidentsDetailsManager.prototype._updateIncidentMarkers = function() {
               });
           }.bind(this));
   }
+};
+
+
+IncidentDetailsMarkersManager.prototype.showAllMarkers = function() {
+  Object.keys(this.incidentMarkers).forEach(function(featureId) {
+      this.incidentMarkers[featureId].getMarker().addTo(this.map);
+  }.bind(this));
+};
+
+IncidentDetailsMarkersManager.prototype.hideAllMarkers = function() {
+  Object.keys(this.incidentMarkers).forEach(function(featureId) {
+      this.incidentMarkers[featureId].getMarker().remove();
+  }.bind(this));
 };
 
 window.IncidentsDetailsManager = window.IncidentsDetailsManager || IncidentsDetailsManager;

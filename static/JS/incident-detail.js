@@ -25,7 +25,7 @@ var incidentSeverity = {
 
 var incidentsData = {};
 
-var incidentsMarkers = null,
+var incidentsMarkers = {},
     results = document.querySelector('.js-results'),
     selectedClass = '-selected',
     selectedIncidentId = '',
@@ -256,7 +256,7 @@ function makeResultItemSelected(markerId) {
   }
 
   var incidentsManager = null;
-  var incidentsMarkers = {};
+  var hiddenIncidentsMarkers = {};
   var hiddenClass = 'hidden-marker';
   var isIncidentsToggleOn = false; // Add a flag to track the toggle state
   
@@ -284,58 +284,63 @@ function makeResultItemSelected(markerId) {
   style.innerHTML = `.${hiddenClass} { display: none !important; }`;
   document.getElementsByTagName('head')[0].appendChild(style);
   
+
   document.querySelector('#incidents-toggle').addEventListener('change', function(event) {
-      isIncidentsToggleOn = event.target.checked;
-  
-      if (isIncidentsToggleOn) {
-          map.showTrafficIncidents();
-  
-          // Inisialisasi atau perbarui IncidentsDetailsManager jika belum diinisialisasi
-          if (!incidentsManager) {
-              incidentsManager = new IncidentsDetailsManager(map, tt.services, {
-                  key: apiKey,
-                  incidentMarkerFactory: function() {
-                      return new IncidentMarker({
-                          iconsMapping: iconsMapping,
-                          incidentSeverity: incidentSeverity,
-                          onSelected: makeResultItemSelected
-                      });
-                  },
-                  onDetailsUpdated: function(data) {
-                      if (!isIncidentsToggleOn) return; // Stop updating if toggle is off
-  
-                      incidentsMarkers = data.markers;
-                      incidentsData = convertToGeoJson(data.trafficIncidents);
-  
-                      createIncidentHeader();
-                      displayedIncidentsData = createDisplayedIncidentsData();
-                      createIncidentsList(false);
-                  }
-              });
-          }
-  
-          // Tampilkan semua marker insiden
-          showAllIncidentMarkers();
-      } else {
-          map.hideTrafficIncidents();
-  
-          // Sembunyikan semua marker insiden
-          hideAllIncidentMarkers();
-  
-          // Hapus detail insiden dari tampilan
-          incidentsData = {};
-          displayedIncidentsData = [];
-          results.innerHTML = '';
-  
-          // Clear map markers if they have been added directly to the map
-          for (var markerId in incidentsMarkers) {
-              if (incidentsMarkers.hasOwnProperty(markerId)) {
-                  incidentsMarkers[markerId].remove();  // Remove marker from map
-              }
-          }
-          incidentsMarkers = {};
-      }
-  });
+    isIncidentsToggleOn = event.target.checked;
+
+    if (isIncidentsToggleOn) {
+        map.showTrafficIncidents();
+
+        // Inisialisasi atau perbarui IncidentsDetailsManager jika belum diinisialisasi
+        if (!incidentsManager) {
+            incidentsManager = new IncidentsDetailsManager(map, tt.services, {
+                key: apiKey,
+                incidentMarkerFactory: function() {
+                    return new IncidentMarker({
+                        iconsMapping: iconsMapping,
+                        incidentSeverity: incidentSeverity,
+                        onSelected: makeResultItemSelected
+                    });
+                },
+                onDetailsUpdated: function(data) {
+                    if (!isIncidentsToggleOn) return; // Stop updating if toggle is off
+
+                    incidentsMarkers = data.markers;
+                    incidentsData = convertToGeoJson(data.trafficIncidents);
+
+                    createIncidentHeader();
+                    displayedIncidentsData = createDisplayedIncidentsData();
+                    createIncidentsList(false);
+                }
+            });
+        }
+
+        // Tampilkan semua marker insiden yang ada
+        for (var markerId in hiddenIncidentsMarkers) {
+            if (hiddenIncidentsMarkers.hasOwnProperty(markerId)) {
+                hiddenIncidentsMarkers[markerId].addTo(map);
+            }
+        }
+
+        hiddenIncidentsMarkers = {};
+
+    } else {
+        map.hideTrafficIncidents();
+
+        // Sembunyikan semua marker insiden
+        for (var markerId in incidentsMarkers) {
+            if (incidentsMarkers.hasOwnProperty(markerId)) {
+                hiddenIncidentsMarkers[markerId] = incidentsMarkers[markerId];
+                hiddenIncidentsMarkers[markerId].remove();
+            }
+        }
+
+        // Hapus detail insiden dari tampilan
+        incidentsData = {};
+        displayedIncidentsData = [];
+        results.innerHTML = '';
+    }
+});
   
   // Function to remove all markers from the map
   function removeAllMarkers() {
@@ -346,3 +351,4 @@ function makeResultItemSelected(markerId) {
       }
       incidentsMarkers = {};
   }
+  
