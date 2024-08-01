@@ -149,7 +149,7 @@ function plotRoute(startLng, startLat, endLng, endLat, callback) {
     maxAlternatives: 2,
     computeTravelTimeFor: 'all',
     computeBestOrder: false,
-    travelMode: 'bus',
+    travelMode: 'truck',
     vehicleWidth: 3,
     vehicleLength: 7,
     vehicleHeight: 3,
