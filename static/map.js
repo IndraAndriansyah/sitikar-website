@@ -1,4 +1,4 @@
-const apiKey = '8dzxZD2SRE74hHUfz5Kg4DdW6KdNL859';
+const apiKey = 'API_KEY';
 let center = [107.6110212, -6.9215529];
 const stylemap ='https://api.tomtom.com/style/2/custom/style/dG9tdG9tQEBAZU9zd2VGcGoxR3l5d0xPczs0NTFmZmQ3NC03MDY0LTQ4NWYtOTA4ZS05NWViNGIyMDFkZjY=.json?key='+apiKey
 
